@@ -1,0 +1,50 @@
+{% extends "layouts/layout.html" %}
+
+{% block title %}
+    Kontrol Paneli
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <h3>Kontrol Paneli</h3>
+            <hr>
+            <small>Hoşgeldin <b>{{ request.user.username }}</b></small>
+            <hr>
+            <a href="{% url "article:addArticle" %}"><button class=" btn btn-primary">Makale Ekle</button></a>
+
+            <hr>
+              {% if articles %}
+          <table class="table table-hover">
+
+            <thead>
+                <tr>
+                    <th scope="col">Başlık</th>
+                    <th scope="col">İçerik</th>
+                    <th scope="col">Tarih</th>
+                    <th scope="col">Düzenle</th>
+                    <th scope="col">Sil</th>
+                </tr>
+            </thead>
+
+            <tbody>
+    {% for article in articles %}
+            <tr>
+                <th scope="row"><a href="{% url "article:detailArticle" article.id %}">{{ article.title }}</a></th>
+                <td>{{ article.content|truncatechars:45|safe|striptags}}</td>
+                <td>{{ article.created_date }}</td>
+                <td><a href="{% url "article:editArticle" article.id %}"><button class="btn btn-primary">Düzenle</button></a></td>
+                <td><a href="{% url "article:deleteArticle" article.id %}"><button class="btn btn-danger">Sil</button></a></td>
+            </tr>
+    {% endfor %}
+            </tbody>
+
+          </table>
+
+    {% else %}
+        <div class="alert alert-warning"> Makale bulunmuyor.</div>
+    {% endif %}
+
+        </div>
+    </div>
+{% endblock %}
